@@ -3,18 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-
+import {data} from "../data";
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
-const data: { id: number, nome: string, profissao: string, descricao: string }[] = [
-  { id: 1, nome: "Igor", profissao: "Marceneiro", descricao: "Bonito e gostoso" }, // usando nome como título principal
-  { id: 2, nome: "Marcos", profissao: "Pipoqueiro", descricao: "Alto e arrumadinho" }
-];
+
 
 export default function HomeScreen({ navigation }: Props) {
 
-  if (data.length == 0) {
+  if (data.length === 0) {
     return (
       <View style={styles.container}>
         <Ionicons name="home-outline" size={64} color="#6C63FF" style={{ marginBottom: 16 }} />
@@ -29,19 +26,24 @@ export default function HomeScreen({ navigation }: Props) {
         </TouchableOpacity>
       </View>
     );
-  } else {
-    return (
-      <View style={styles.container}>
-        <FlatList data={data} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => (
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList 
+        data={data} 
+        keyExtractor={(item) => item.id.toString()} 
+        renderItem={({ item }) => (
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate}>
+            {/* ✅ Redirecionamento correto passando o id do item clicado */}
+            <TouchableOpacity onPress={() => navigation.navigate('Details', { itemId: item.id },)}>
               <Text style={styles.titleBorder}>{item.nome}</Text>
             </TouchableOpacity>
           </View>
-        )} />
-      </View>
-    )
-  }
+        )} 
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -57,7 +59,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    marginBottom: 15
+    marginBottom: 15,
+    marginTop: 20
   },
   subtitle: { fontSize: 16, color: '#666', marginBottom: 24 },
   button: { backgroundColor: '#6C63FF', padding: 14, borderRadius: 8 },
