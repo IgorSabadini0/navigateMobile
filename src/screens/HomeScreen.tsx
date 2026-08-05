@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-import {data} from "../data";
+import { data } from "../data";
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
-
-
 
 export default function HomeScreen({ navigation }: Props) {
 
@@ -17,12 +16,12 @@ export default function HomeScreen({ navigation }: Props) {
         <Ionicons name="home-outline" size={64} color="#6C63FF" style={{ marginBottom: 16 }} />
         <Text style={styles.title}>Home</Text>
         <Text style={styles.subtitle}>Bem-vindo ao app!</Text>
-
+        <Text style={styles.subtitle}>Nenhuma pessoa cadastrada até o momento</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Details', { itemId: 42 })}
         >
-          <Text style={styles.buttonText}>Ir para Detalhes</Text>
+          <Text style={styles.buttonText}>Cadastrar uma nova pessoa</Text>
         </TouchableOpacity>
       </View>
     );
@@ -30,18 +29,19 @@ export default function HomeScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <FlatList 
-        data={data} 
-        keyExtractor={(item) => item.id.toString()} 
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View>
-            {/* ✅ Redirecionamento correto passando o id do item clicado */}
+            {/* Redirecionamento enviando itemId clicado na rota "Details" */}
             <TouchableOpacity onPress={() => navigation.navigate('Details', { itemId: item.id },)}>
               <Text style={styles.titleBorder}>{item.nome}</Text>
             </TouchableOpacity>
           </View>
-        )} 
+        )}
       />
+      <TouchableOpacity><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
     </View>
   );
 }
@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   subtitle: { fontSize: 16, color: '#666', marginBottom: 24 },
+  buttonAdd: { marginTop: 16, marginBottom: 24 },
+  text: { fontSize: 16, color: '#666', marginTop: 24, marginBottom: 18 },
   button: { backgroundColor: '#6C63FF', padding: 14, borderRadius: 8 },
   buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 });
