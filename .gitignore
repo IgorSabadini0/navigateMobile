@@ -1,0 +1,35 @@
+# Dependências
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Metro bundler
+.metro-health-check*
+
+# Native (builds e chaves)
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Debug / logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Editores
+.idea/
+.vscode/
