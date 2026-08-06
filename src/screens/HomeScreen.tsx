@@ -4,13 +4,15 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-import { data } from "../data";
+import { usePeople } from '../context/PeopleContext';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
 
-  if (data.length === 0) {
+  const { people } = usePeople(); // Sempre atualizado!
+
+  if (people.length === 0) {
     return (
       <View style={styles.container}>
         <Ionicons name="home-outline" size={64} color="#6C63FF" style={{ marginBottom: 16 }} />
@@ -30,7 +32,7 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={people}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View>
@@ -41,7 +43,7 @@ export default function HomeScreen({ navigation }: Props) {
           </View>
         )}
       />
-      <TouchableOpacity><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('AddPerson')}><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
     </View>
   );
 }
