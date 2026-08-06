@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }: Props) {
           </View>
         )}
       />
-      <TouchableOpacity><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('AddPerson')}><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
     </View>
   );
 }
