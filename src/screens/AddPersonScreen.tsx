@@ -5,7 +5,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../navigation/HomeStack';
-import { data } from "../data";
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'AddPerson'>; // necessário para acessar os parâmetros da rota
 
@@ -19,13 +18,7 @@ export default function AddPersonScreen({ route, navigation }: Props) {
     const handleSave = () => {
         if (!nome.trim()) return;
 
-        // verificar o maior id existente no array de dados e depois incrementar 1 para o novo id
-        const maxId = data.reduce((max, item) => (item.id > max ? item.id : max), 0);
-        const newId = maxId + 1;
-
         addPerson({ nome, profissao, descricao });
-
-        console.log('Dados a salvar:', { id: newId, nome, profissao, descricao });
 
         // 2. Exibir mensagem de sucesso
         alert('Pessoa adicionada com sucesso!');

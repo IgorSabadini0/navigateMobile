@@ -12,11 +12,16 @@ export function PeopleProvider({ children }: { children: ReactNode }) {
     const [people, setPeople] = useState<Person[]>(initialData);
 
     const addPerson = (newPersonData: Omit<Person, 'id'>) => {
-        const newPerson: Person = {
-            id: Date.now(), // gera um id temporário
-            ...newPersonData,
-        };
-        setPeople((prev) => [...prev, newPerson]);
+        setPeople((prev) => {
+            const maxId = prev.reduce((max, item) => (item.id > max ? item.id : max), 0);
+            const newId = maxId + 1;
+            const newPerson: Person = {
+                id: newId,
+                ...newPersonData,
+            };
+
+            return [...prev, newPerson];
+        });
     };
 
     return (

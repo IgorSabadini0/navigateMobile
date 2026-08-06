@@ -3,15 +3,16 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-import { data } from "../data";
+import { usePeople } from '../context/PeopleContext';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Details'>;
 
 export default function DetailsScreen({ navigation, route }: Props) {
 
   const { itemId } = route.params;
+  const { people } = usePeople();
 
-  const pessoa = data.find((item) => item.id === itemId);
+  const pessoa = people.find((item) => item.id === itemId);
 
   if (!pessoa) {
     return (
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   subtitle: { fontSize: 16, color: '#666' },
-  button: { backgroundColor: '#6C63FF', padding: 14, borderRadius: 8, marginTop: 10},
+  button: { backgroundColor: '#6C63FF', padding: 14, borderRadius: 8, marginTop: 10 },
   buttonText: { color: '#000', fontWeight: 'bold', fontSize: 16 },
   description: { fontSize: 16, color: '#666', textAlign: 'center' }
 });
