@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, KeyboardAvoidingView, Platform, ScrollView, } from 'react-native';
+import { usePeople } from '../context/PeopleContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -10,23 +11,21 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'AddPerson'>; // necess�
 
 
 export default function AddPersonScreen({ route, navigation }: Props) {
+    const { addPerson } = usePeople();
     const [nome, setNome] = useState('');
     const [profissao, setProfissao] = useState('');
     const [descricao, setDescricao] = useState('');
 
     const handleSave = () => {
-        // 1. Lógica para salvar os dados (ex: enviar para API ou estado global)
+        if (!nome.trim()) return;
 
         // verificar o maior id existente no array de dados e depois incrementar 1 para o novo id
         const maxId = data.reduce((max, item) => (item.id > max ? item.id : max), 0);
         const newId = maxId + 1;
 
-        const newPerson = { id: newId, nome, profissao, descricao };
+        addPerson({ nome, profissao, descricao });
 
-        // Lógica para adicionar a nova pessoa ao array de dados (ex: enviar para API ou estado global)
-        data.push(newPerson); // Adiciona a nova pessoa ao array de dados, por usar o .push adiciona ao final do array
-
-        console.log('Dados a salvar:', newPerson);
+        console.log('Dados a salvar:', { id: newId, nome, profissao, descricao });
 
         // 2. Exibir mensagem de sucesso
         alert('Pessoa adicionada com sucesso!');

@@ -5,10 +5,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
 import { data } from "../data";
+import { usePeople } from '../context/PeopleContext';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
 
 export default function HomeScreen({ navigation }: Props) {
+
+  const { people } = usePeople(); // Sempre atualizado!
 
   if (data.length === 0) {
     return (
