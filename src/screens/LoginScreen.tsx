@@ -13,7 +13,7 @@ export default function LoginScreen({ onLogin }: Props) {
   const [pass, setPass] = useState('');
 
   function handleLogin() {
-    if (user === '' && pass === '') {
+    if (user === 'admin' && pass === '123456') {
       onLogin();
     } else {
       Alert.alert('Erro', 'Usuário ou senha inválidos');

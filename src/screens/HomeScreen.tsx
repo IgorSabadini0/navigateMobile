@@ -1,72 +1,73 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { HomeStackParamList } from '../navigation/HomeStack';
-import { usePeople } from '../context/PeopleContext';
+import type { Item } from '../types';
 
-type Props = NativeStackScreenProps<HomeStackParamList, 'Home'>;
+// Props do navegador + props extras vindas do App
+type Props = NativeStackScreenProps<HomeStackParamList, 'Home'> & {
+  itens: Item[];
+  adicionarItem: (item: Item) => void;
+};
 
-export default function HomeScreen({ navigation }: Props) {
-
-  const { people } = usePeople(); // Sempre atualizado!
-
-  if (people.length === 0) {
+export default function HomeScreen({ navigation, itens }: Props) {
+  function renderItem({ item }: { item: Item }) {
     return (
-      <View style={styles.container}>
-        <Ionicons name="home-outline" size={64} color="#6C63FF" style={{ marginBottom: 16 }} />
-        <Text style={styles.title}>Home</Text>
-        <Text style={styles.subtitle}>Bem-vindo ao app!</Text>
-        <Text style={styles.subtitle}>Nenhuma pessoa cadastrada até o momento</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Details', { itemId: 42 })}
-        >
-          <Text style={styles.buttonText}>Cadastrar uma nova pessoa</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => navigation.navigate('Details', { item })}
+      >
+        <Text style={styles.cardTitle}>{item.nome}</Text>
+        <Text style={styles.cardSubtitle}>{item.professor}</Text>
+      </TouchableOpacity>
     );
   }
 
   return (
     <View style={styles.container}>
+      {/* FlatList substitui o View estático */}
       <FlatList
-        data={people}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View>
-            {/* Redirecionamento enviando itemId clicado na rota "Details" */}
-            <TouchableOpacity onPress={() => navigation.navigate('Details', { itemId: item.id },)}>
-              <Text style={styles.titleBorder}>{item.nome}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+        data={itens}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={renderItem}
+        contentContainerStyle={styles.list}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('AddPerson')}><AntDesign name="plus-circle" size={48} color="#6C63FF" style={styles.buttonAdd} /></TouchableOpacity>
+
+      {/* Botão flutuante para adicionar novo item */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('NewItem')}
+      >
+        <Ionicons name="add" size={32} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' },
-  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 8 },
-  titleBorder: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    borderColor: '#000000',
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  list: { padding: 16, paddingBottom: 96 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 12,
     borderWidth: 1,
-    borderStyle: 'solid',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    marginBottom: 15,
-    marginTop: 20
+    borderColor: '#e0e0e0',
   },
-  subtitle: { fontSize: 16, color: '#666', marginBottom: 24 },
-  buttonAdd: { marginTop: 16, marginBottom: 24 },
-  text: { fontSize: 16, color: '#666', marginTop: 24, marginBottom: 18 },
-  button: { backgroundColor: '#6C63FF', padding: 14, borderRadius: 8 },
-  buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#333' },
+  cardSubtitle: { fontSize: 14, color: '#888', marginTop: 4 },
+  fab: {
+    position: 'absolute',
+    right: 24,
+    bottom: 24,
+    backgroundColor: '#6C63FF',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+  },
 });
